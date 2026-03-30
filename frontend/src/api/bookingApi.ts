@@ -1,5 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
-
+const API_BASE_URL = "https://hotel-booking-backend-35rp.onrender.com/api";
 export interface Booking {
   id: number;
   checkInDate: string;
@@ -27,7 +26,7 @@ export interface CreateBookingData {
 // Create new booking (protected)
 export async function createBooking(data: CreateBookingData): Promise<Booking> {
   const token = localStorage.getItem('token');
-  
+
   if (!token) {
     throw new Error('You must be logged in to book a hotel');
   }
@@ -52,7 +51,7 @@ export async function createBooking(data: CreateBookingData): Promise<Booking> {
 // Get user's bookings (protected)
 export async function getMyBookings(): Promise<Booking[]> {
   const token = localStorage.getItem('token');
-  
+
   if (!token) {
     throw new Error('You must be logged in');
   }
@@ -74,7 +73,7 @@ export async function getMyBookings(): Promise<Booking[]> {
 // Get booking by ID (protected)
 export async function getBookingById(id: number): Promise<Booking> {
   const token = localStorage.getItem('token');
-  
+
   const response = await fetch(`${API_BASE_URL}/bookings/${id}`, {
     headers: {
       'Authorization': token ? `Bearer ${token}` : '',
@@ -92,7 +91,7 @@ export async function getBookingById(id: number): Promise<Booking> {
 // Cancel booking (protected)
 export async function cancelBooking(id: number): Promise<Booking> {
   const token = localStorage.getItem('token');
-  
+
   if (!token) {
     throw new Error('You must be logged in');
   }

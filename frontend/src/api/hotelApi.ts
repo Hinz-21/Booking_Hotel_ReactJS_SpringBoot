@@ -1,5 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
-
+const API_BASE_URL = "https://hotel-booking-backend-35rp.onrender.com/api";
 export interface Hotel {
   id: number;
   name: string;
@@ -34,20 +33,20 @@ export interface CreateHotelData {
 export async function fetchHotels(): Promise<Hotel[]> {
   try {
     const url = `${API_BASE_URL}/hotels`;
-    
+
     console.log('Fetching hotels from:', url);
-    
+
     const res = await fetch(url, {
       cache: "no-store",
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    
+
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }
-    
+
     const data = await res.json();
     console.log('Received hotels data:', data);
     return data;
@@ -61,20 +60,20 @@ export async function fetchHotels(): Promise<Hotel[]> {
 export async function fetchHotelById(id: number): Promise<Hotel> {
   try {
     const url = `${API_BASE_URL}/hotels/${id}`;
-    
+
     console.log('Fetching hotel by ID:', url);
-    
+
     const res = await fetch(url, {
       cache: "no-store",
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    
+
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }
-    
+
     const data = await res.json();
     console.log('Received hotel data:', data);
     return data;
@@ -88,18 +87,18 @@ export async function fetchHotelById(id: number): Promise<Hotel> {
 export async function searchHotels(query: string): Promise<Hotel[]> {
   try {
     const url = `${API_BASE_URL}/hotels/search?q=${encodeURIComponent(query)}`;
-    
+
     const res = await fetch(url, {
       cache: "no-store",
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    
+
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }
-    
+
     return await res.json();
   } catch (error) {
     console.error('Failed to search hotels:', error);
@@ -110,25 +109,25 @@ export async function searchHotels(query: string): Promise<Hotel[]> {
 // Get hotels by owner (protected)
 export async function getMyHotels(): Promise<Hotel[]> {
   const token = localStorage.getItem('token');
-  
+
   const res = await fetch(`${API_BASE_URL}/hotels/owner`, {
     headers: {
       'Authorization': token ? `Bearer ${token}` : '',
       'Content-Type': 'application/json',
     },
   });
-  
+
   if (!res.ok) {
     throw new Error('Failed to fetch your hotels');
   }
-  
+
   return res.json();
 }
 
 // Create new hotel (protected)
 export async function createHotel(data: CreateHotelData): Promise<Hotel> {
   const token = localStorage.getItem('token');
-  
+
   const res = await fetch(`${API_BASE_URL}/hotels`, {
     method: 'POST',
     headers: {
@@ -137,18 +136,18 @@ export async function createHotel(data: CreateHotelData): Promise<Hotel> {
     },
     body: JSON.stringify(data),
   });
-  
+
   if (!res.ok) {
     throw new Error('Failed to create hotel');
   }
-  
+
   return res.json();
 }
 
 // Update hotel (protected)
 export async function updateHotel(id: number, data: Partial<CreateHotelData>): Promise<Hotel> {
   const token = localStorage.getItem('token');
-  
+
   const res = await fetch(`${API_BASE_URL}/hotels/${id}`, {
     method: 'PUT',
     headers: {
@@ -157,25 +156,25 @@ export async function updateHotel(id: number, data: Partial<CreateHotelData>): P
     },
     body: JSON.stringify(data),
   });
-  
+
   if (!res.ok) {
     throw new Error('Failed to update hotel');
   }
-  
+
   return res.json();
 }
 
 // Delete hotel (protected)
 export async function deleteHotel(id: number): Promise<void> {
   const token = localStorage.getItem('token');
-  
+
   const res = await fetch(`${API_BASE_URL}/hotels/${id}`, {
     method: 'DELETE',
     headers: {
       'Authorization': token ? `Bearer ${token}` : '',
     },
   });
-  
+
   if (!res.ok) {
     throw new Error('Failed to delete hotel');
   }
