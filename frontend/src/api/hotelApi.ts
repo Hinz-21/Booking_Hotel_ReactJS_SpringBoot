@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://hotel-booking-backend-35rp.onrender.com/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
 export interface Hotel {
   id: number;
   name: string;
